@@ -4,6 +4,70 @@ Implements **GCN**, **GAT**, and **GraphSAGE** for **relation prediction**
 (predicting the relation *r* between head entity *h* and tail entity *t*) on
 five standard KG benchmarks.
 
+# Knowledge Graph Relation Prediction with Graph Neural Networks
+
+[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.1.0-red.svg)](https://pytorch.org/)
+[![PyG](https://img.shields.io/badge/PyG-2.4.0-green.svg)](https://pytorch-geometric.readthedocs.io/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+A comprehensive implementation of Graph Neural Networks (GCN, GAT, and GraphSAGE) for knowledge graph relation prediction. This repository provides end-to-end training and evaluation pipelines for multiple benchmark datasets with automatic sequential execution.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Model Architectures](#model-architectures)
+- [Supported Datasets](#supported-datasets)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Results](#results)
+- [Project Structure](#project-structure)
+- [Citation](#citation)
+- [License](#license)
+
+## Overview
+
+This project implements three state-of-the-art Graph Neural Network architectures for predicting relations in knowledge graphs:
+
+- **GCN (Graph Convolutional Networks)**: Captures local neighborhood information through graph convolutions
+- **GAT (Graph Attention Networks)**: Uses attention mechanisms to weight neighbor importance
+- **GraphSAGE (Graph Sample and Aggregator)**: Samples and aggregates features from local neighborhoods
+
+The models use the DistMult scoring function and are trained with self-adversarial negative sampling to achieve competitive results on standard knowledge graph completion benchmarks.
+
+## Features
+
+- **Multi-GPU Support**: Automatic detection and utilization of multiple GPUs for faster training
+- **Sequential Dataset Processing**: Run training on multiple datasets automatically
+- **Memory Optimization**: Dataset-specific hyperparameter tuning for large datasets (YAGO3-10)
+- **Comprehensive Evaluation**: MR, MRR, Hits@1, Hits@3, Hits@10 metrics with decimal formatting
+- **Early Stopping**: Prevents overfitting with patience-based early stopping
+- **Learning Rate Scheduling**: ReduceLROnPlateau for optimal convergence
+- **Gradient Clipping**: Prevents gradient explosion
+- **Residual Connections**: Improves gradient flow in deep networks
+- **Layer Normalization**: Stabilizes training
+
+## Model Architectures
+
+### GCN (Graph Convolutional Network)
+- Uses graph convolutions to aggregate neighborhood information
+- Applies layer normalization and residual connections
+- Efficient for capturing local graph structure
+
+### GAT (Graph Attention Network)
+- Employs multi-head attention mechanisms
+- Learns importance weights for different neighbors
+- Better at capturing complex relationships
+
+### GraphSAGE
+- Samples fixed-size neighborhoods
+- Aggregates features through various functions (mean, max)
+- Scalable to large graphs
+
+
+
 ---
 
 ## Project Structure
@@ -55,7 +119,12 @@ cd /home/user/23h1710_KGC/GNN_Based_relation_pre/src
 ### 3  Train a single model
 
 ```bash
-# GCN on FB15k-237
+
+# Run GCN on all datasets with multi-GPU, it will provide results table. For GAT and GSAG change gcn to gat and gsag
+python main.py --gnn_type gcn --use_multi_gpu
+
+
+# More analysis, GCN on FB15k-237
 python train.py --model GCN --dataset FB15k-237
 
 # GAT on WN18RR  (4 attention heads)
@@ -87,13 +156,28 @@ python evaluate.py \
 
 All evaluation uses **filtered** settings (false negatives removed):
 
-| Metric  | Description                          |
-|---------|--------------------------------------|
-| MR      | Mean Rank (lower is better)          |
-| MRR     | Mean Reciprocal Rank (higher better) |
-| Hits@1  | % of queries ranked in top 1         |
-| Hits@3  | % of queries ranked in top 3         |
-| Hits@10 | % of queries ranked in top 10        |
+
+##  Supported Datasets
+
+| Dataset | Entities | Relations | Train | Valid | Test |
+|---------|----------|-----------|-------|-------|------|
+| FB15k-237 | 14,265 | 237 | 272,115 | 17,535 | 20,466 |
+| WN18 | 40,943 | 18 | 141,442 | 5,000 | 5,000 |
+| WN18RR | 40,943 | 11 | 86,835 | 3,034 | 3,134 |
+| YAGO3-10 | 123,182 | 37 | 1,079,040 | 5,000 | 5,000 |
+| FB15k | 14,951 | 1,345 | 483,142 | 50,000 | 59,071 |
+
+##  Installation
+
+### Prerequisites
+- Python 3.8 or higher
+- CUDA 12.1 (for GPU support)
+- NVIDIA GPU with at least 8GB VRAM (recommended)
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/yourusername/knowledge-graph-gnn.git
+cd knowledge-graph-gnn
 
 ---
 
