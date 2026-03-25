@@ -167,6 +167,57 @@ All evaluation uses **filtered** settings (false negatives removed):
 | YAGO3-10 | 123,182 | 37 | 1,079,040 | 5,000 | 5,000 |
 | FB15k | 14,951 | 1,345 | 483,142 | 50,000 | 59,071 |
 
+
+##  GNN-based Model Results
+
+The following table presents the performance of our implemented GNN-based models across five standard knowledge graph completion datasets.
+
+| **Dataset** | **Model** | **MR ↓** | **MRR ↑** | **Hits@1 ↑** | **Hits@3 ↑** | **Hits@10 ↑** |
+|-------------|-----------|----------|-----------|--------------|--------------|---------------|
+| **FB15k** | GCN | 70 | 0.199 | 0.094 | - | 0.409 |
+| | GAT | 69 | 0.328 | 0.179 | - | 0.622 |
+| | GraphSAGE | 218 | 0.180 | 0.094 | - | 0.348 |
+| **WN18** | GCN | 5 | 0.358 | 0.158 | - | 0.868 |
+| | GAT | 6 | 0.322 | 0.125 | - | 0.886 |
+| | GraphSAGE | 4 | 0.464 | 0.232 | - | 0.911 |
+| **FB15k-237** | GCN | 20 | 0.366 | 0.234 | 0.356 | 0.654 |
+| | GAT | 10 | 0.547 | 0.417 | 0.572 | 0.787 |
+| | GraphSAGE | 52 | 0.267 | 0.190 | 0.236 | 0.414 |
+| **WN18RR** | GCN | 5 | 0.323 | 0.124 | 0.220 | 0.952 |
+| | GAT | 4 | 0.360 | 0.145 | 0.252 | 0.983 |
+| | GraphSAGE | 4 | 0.295 | 0.036 | 0.148 | 0.992 |
+| **YAGO3-10** | GCN | 7 | 0.490 | 0.311 | 0.421 | 0.761 |
+| | GAT | 6 | 0.462 | 0.284 | 0.399 | 0.785 |
+| | GraphSAGE | 13 | 0.274 | 0.146 | 0.203 | 0.522 |
+
+### Performance Highlights
+
+- **Best Overall Performance**: GAT achieves the highest MRR (0.547) and Hits@10 (0.787) on FB15k-237
+- **Best on WN18**: GraphSAGE achieves the best MRR (0.464) and Hits@10 (0.911)
+- **Best on WN18RR**: GraphSAGE achieves the highest Hits@10 (0.992)
+- **Best on YAGO3-10**: GCN achieves the best MRR (0.490) and Hits@10 (0.761)
+- **Lowest Mean Rank**: GAT achieves the lowest MR (10) on FB15k-237, and multiple models achieve MR 4-5 on WN18 and WN18RR
+
+### Key Observations
+
+1. **GAT excels on dense datasets** (FB15k-237) with complex relation patterns
+2. **GraphSAGE performs exceptionally well on word-based datasets** (WN18, WN18RR)
+3. **GCN shows strong scalability** on large datasets (YAGO3-10) with 123K entities
+4. **All GNN models achieve competitive Hits@10 scores** on WN18RR (0.95+)
+
+### Training Configuration
+
+Optimal hyperparameters used for each dataset:
+
+| Dataset | Hidden Dim | Batch Size | Negative Samples | Learning Rate | Epochs |
+|---------|------------|------------|------------------|---------------|--------|
+| FB15k-237 | 256 | 512 | 128 | 0.001 | 200 |
+| WN18 | 256 | 512 | 128 | 0.001 | 200 |
+| WN18RR | 256 | 512 | 128 | 0.001 | 200 |
+| YAGO3-10 | 128 | 64 | 32 | 0.001 | 200 |
+| FB15k | 256 | 512 | 128 | 0.001 | 200 |
+
+
 ##  Installation
 
 ### Prerequisites
