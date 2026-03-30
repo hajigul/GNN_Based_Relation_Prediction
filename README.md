@@ -228,9 +228,9 @@ Optimal hyperparameters used for each dataset:
 ### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/yourusername/knowledge-graph-gnn.git
+```
 cd knowledge-graph-gnn
 
----
 
 ## Model Details
 
@@ -249,7 +249,7 @@ cd knowledge-graph-gnn
 - L2 normalisation after each layer
 - Concatenates ego + aggregated neighbour features
 
----
+
 
 ## Key Arguments
 
@@ -276,11 +276,13 @@ cd knowledge-graph-gnn
 
 Edit `setup.sh` to install the CUDA build of PyTorch:
 
-```bash
-# CUDA 11.8
-pip install torch --index-url https://download.pytorch.org/whl/cu118
 
+# CUDA 11.8
+```bash
+pip install torch --index-url https://download.pytorch.org/whl/cu118
+```
 # CUDA 12.1
+```bash
 pip install torch --index-url https://download.pytorch.org/whl/cu121
 ```
 
